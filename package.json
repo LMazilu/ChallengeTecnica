@@ -1,0 +1,27 @@
+{
+    "name": "challenge_tecnica",
+    "version": "1.0.0",
+    "description": "Challenge tecnica per sito ecommerce che gestisce l'acquisto di buoni",
+    "main": "server.js",
+    "scripts": {
+        "test": "npm test",
+        "start": "nodemon server.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/LMazilu/ChallengeTecnica.git"
+    },
+    "author": "Liviu Marian Mazilu",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/LMazilu/ChallengeTecnica/issues"
+    },
+    "homepage": "https://github.com/LMazilu/ChallengeTecnica#readme",
+    "dependencies": {
+        "ejs": "^3.1.10",
+        "express": "^4.19.2"
+    },
+    "devDependencies": {
+        "nodemon": "^3.1.3"
+    }
+}
