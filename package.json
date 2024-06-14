@@ -2,10 +2,10 @@
     "name": "challenge_tecnica",
     "version": "1.0.0",
     "description": "Challenge tecnica per sito ecommerce che gestisce l'acquisto di buoni",
-    "main": "server.js",
+    "main": "app.js",
     "scripts": {
         "test": "npm test",
-        "start": "nodemon server.js"
+        "start": "nodemon app.js"
     },
     "repository": {
         "type": "git",
@@ -19,7 +19,8 @@
     "homepage": "https://github.com/LMazilu/ChallengeTecnica#readme",
     "dependencies": {
         "ejs": "^3.1.10",
-        "express": "^4.19.2"
+        "express": "^4.19.2",
+        "express-ejs-layouts": "^2.5.1"
     },
     "devDependencies": {
         "nodemon": "^3.1.3"
