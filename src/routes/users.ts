@@ -13,7 +13,6 @@ const router = Router();
  * Request custom per alcuni test, avrò i models dopo
  */
 
-
 interface CustomRequest2 extends Request {
   user?: {
     name: string;

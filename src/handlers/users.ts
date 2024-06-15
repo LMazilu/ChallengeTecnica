@@ -22,7 +22,7 @@ const mockUsers = [
 ];
 
 export function createUser(req: Request, res: Response) {
-  let isValid = false;
+  const isValid = false;
   if (isValid) {
     mockUsers.push({ name: req.body.firstName });
     res.redirect("/users" + (mockUsers.length - 1));
