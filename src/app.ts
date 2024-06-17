@@ -1,6 +1,8 @@
-import express, { Express, Request, Response } from "express";
+import express, { Express, NextFunction, Request, Response } from "express";
 import userRouter from "./routes/users";
 import { loggingHandler } from "./middlewares/loggingHandler";
+import { corsHandler } from "./middlewares/corsHandler";
+import { apiNotFound } from "./middlewares/apiNotFound";
 import path from "path";
 import "./config/logging";
 
@@ -18,19 +20,21 @@ app
   .use(express.json());
 
 app.use(loggingHandler);
+app.use(corsHandler);
 
 // Import delle routes
 app.use("/users", userRouter);
 
 // Routes di base per la landing page
-app.get("/", (req: Request, res: Response) => {
-  // res.render("index");
-  res.render("welcome");
+app.get("/", (req: Request, res: Response, next: NextFunction) => {
+  res.status(200).render("welcome");
 });
 
-app.get("/login", (req, res) => {
+app.get("/login", (req: Request, res: Response, next: NextFunction) => {
   res.render("login");
 });
+
+app.use(apiNotFound);
 
 // Inizializzazione del server
 const port = process.env.SERVER_PORT ?? 3000;

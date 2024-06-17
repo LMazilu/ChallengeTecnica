@@ -9,5 +9,4 @@ export const apiNotFound = (
   logging.error(error);
   res.status(404);
   res.send(error.message);
-  next();
 };
