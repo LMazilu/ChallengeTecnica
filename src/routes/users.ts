@@ -5,7 +5,7 @@ import {
   getUsers,
   getUsersById,
   newUser,
-  updateUser,
+  updateUser
 } from "../handlers/users";
 const router = Router();
 

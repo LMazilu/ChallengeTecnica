@@ -5,6 +5,9 @@ import { corsHandler } from "./middlewares/corsHandler";
 import { apiNotFound } from "./middlewares/apiNotFound";
 import path from "path";
 import "./config/logging";
+import { loginUser } from "./services/authService";
+import { auth } from "./middlewares/cookieJwtAuth";
+import cors from "cors";
 
 // Configurazione iniziale
 const app: Express = express();
@@ -20,10 +23,16 @@ app
   .use(express.json());
 
 app.use(loggingHandler);
-app.use(corsHandler);
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
+// app.use(corsHandler);
 
 // Import delle routes
-app.use("/users", userRouter);
+app.use("/users", auth, userRouter);
 
 // Routes di base per la landing page
 app.get("/", (req: Request, res: Response, next: NextFunction) => {
@@ -34,10 +43,12 @@ app.get("/login", (req: Request, res: Response, next: NextFunction) => {
   res.render("login");
 });
 
+app.post("/login", loginUser);
+
 app.use(apiNotFound);
 
 // Inizializzazione del server
-const port = process.env.SERVER_PORT ?? 3000;
+const port = process.env.SERVER_PORT ?? 3030;
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
