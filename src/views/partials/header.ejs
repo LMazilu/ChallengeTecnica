@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BuoniAcquisto - Benvenuto</title>
+    <link rel="icon" type="image/x-icon" href="/images/logo.png" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-200">
+    <header
+      class="flex items-center justify-between p-4 bg-yellow-400 shadow-lg"
+    >
+      <div class="logo">
+        <img
+          src="/images/welcomeLogo.jpg"
+          alt="BuoniAcquisto Logo"
+          class="h-16 w-16 object-contain"
+        />
+      </div>
+      <div>
+        <button
+          onclick="location.href='/login'"
+          class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition duration-300"
+        >
+          Accedi
+        </button>
+        <button
+          onclick="location.href='/register'"
+          class="bg-green-600 text-white px-4 py-2 rounded-md ml-2 hover:bg-green-700 transition duration-300"
+        >
+          Registrati
+        </button>
+      </div>
+    </header>
+  </body>
+</html>
