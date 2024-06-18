@@ -3,12 +3,6 @@ import { CreateUserDto } from "src/dtos/CreateUser.dto";
 import { CreateUserQueryParams } from "src/types/query-params";
 import { User } from "src/types/response";
 
-interface CustomRequest2 extends Request {
-  user?: {
-    name: string;
-  };
-}
-
 export function getUsers(req: Request, res: Response) {
   res.send("Users List");
 }
@@ -33,9 +27,9 @@ export function createUser(
   return res.status(200).send({ id: "1", username, email });
 }
 
-export function getUsersById(req: CustomRequest2, res: Response) {
+export function getUsersById(req: Request, res: Response) {
   res.send(
-    "User with id " + req.params.id + " is " + (req.user?.name ?? "not found")
+    "User with id " + req.params.id + " is " + (req.user ?? "not found")
   );
 }
 

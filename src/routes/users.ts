@@ -13,12 +13,6 @@ const router = Router();
  * Request custom per alcuni test, avrò i models dopo
  */
 
-interface CustomRequest2 extends Request {
-  user?: {
-    name: string;
-  };
-}
-
 router.use(logger);
 
 /**
@@ -39,7 +33,7 @@ const mockUsers = [
   { name: "Paul" },
 ];
 
-router.param("id", (req: CustomRequest2, res: Response, next, id) => {
+router.param("id", (req: Request, res: Response, next, id) => {
   req.user = mockUsers[id];
   next();
 });
