@@ -1,13 +1,14 @@
 import express, { Express, NextFunction, Request, Response } from "express";
 import userRouter from "./routes/users";
 import { loggingHandler } from "./middlewares/loggingHandler";
-import { corsHandler } from "./middlewares/corsHandler";
 import { apiNotFound } from "./middlewares/apiNotFound";
 import path from "path";
 import "./config/logging";
-import { loginUser } from "./services/authService";
-import { auth } from "./middlewares/cookieJwtAuth";
+import { auth } from "./middlewares/auth";
 import cors from "cors";
+import cookieParser from "cookie-parser";
+import errorHandler from "./middlewares/errorHandler";
+import { login } from "./controllers/authController";
 
 // Configurazione iniziale
 const app: Express = express();
@@ -23,9 +24,10 @@ app
   .use(express.json());
 
 app.use(loggingHandler);
+app.use(cookieParser());
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "http://localhost:"+process.env.CLIENT_PORT,
     credentials: true,
   })
 );
@@ -43,9 +45,10 @@ app.get("/login", (req: Request, res: Response, next: NextFunction) => {
   res.render("login");
 });
 
-app.post("/login", loginUser);
+app.post("/login", login);
 
 app.use(apiNotFound);
+app.use(errorHandler);
 
 // Inizializzazione del server
 const port = process.env.SERVER_PORT ?? 3030;

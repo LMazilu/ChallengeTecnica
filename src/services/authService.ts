@@ -1,7 +1,16 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import { Request, Response } from "express";
 import { db } from "../config/db";
+import { RowDataPacket, FieldPacket } from "mysql2"; // Adjust the import based on your actual db client
+import { NotFoundError } from "../errors/notFound";
+import { InvalidCredentialsError } from "../errors/invalidCredentials";
+
+interface User extends RowDataPacket {
+  id: number;
+  username: string;
+  password: string;
+  isAdmin: boolean;
+}
 
 export const registerUser = async (username: string, password: string) => {
   const hashedPassword = await bcrypt.hash(password, 10);
@@ -12,63 +21,33 @@ export const registerUser = async (username: string, password: string) => {
   return result;
 };
 
-export const loginUser = async (req : Request, res: Response) => {
-    try {
-        const { username, password } = req.body;
-    // const [rows] = await db.execute("SELECT * FROM users WHERE username = ?", [
-    //  username,
-    // ]);
-    // const user = rows[0];
-
-
-    const user = {
-      email: "1bUeh@example.com",
-      password: "123456",
-      username: "admin",
-      name: username,
-    };
-
-    // await getUser(username);
-
+export const loginUser = async (username: string, password: string) => {
+  const [rows]: [User[], FieldPacket[]] = await db.execute(
+    "SELECT * FROM users WHERE username = ?",
+    [username]
+  );
+  const user = rows[0];
     if (!user) {
-      return res.status(401).json({ message: "Invalid username or password" });
-    }
+    throw new NotFoundError("No user found");
+  }
 
-    // const isPasswordCorrect = await bcrypt.compare(password, user.password);
-    const isPasswordCorrect = true;
+  const isPasswordCorrect = await bcrypt.compare(password, user.password);
 
     if (!isPasswordCorrect) {
-      return res.status(401).json({ message: "Invalid username or password" });
-    }
-
-    if (!process.env.JWT_SECRET) {
-      throw new Error("JWT_SECRET is not defined");
-    }
-
-    jwt.sign(
-      user,
-      process.env.JWT_SECRET,
-      { expiresIn: "1d" },
-      (err, accessToken) => {
-        if (err) {
-          return res.status(500).json({
-            message:
-              "Error during the authentication service. Please try again",
-          });
-        }
-        return res
-          .status(200)
-          .cookie("accessToken", accessToken, {
-            httpOnly: true,
-            secure: true,
-            sameSite: "strict",
-          })
-          .json({ accessToken });
-      }
-    );
-  } catch (error) {
-    return res
-      .status(500)
-      .json({ message: "Error while authenticating. Please try again" });
+    throw new InvalidCredentialsError("Invalid password");
   }
+
+  if (!process.env.JWT_SECRET) {
+    throw new Error("JWT_SECRET is not defined");
+  }
+
+    const token = jwt.sign(
+        user,
+        process.env.JWT_SECRET,
+        { expiresIn: "1d" });
+    if (!token) {
+        throw new Error("Error during the authentication service. Please try again");
+    }
+
+    return token;
 };

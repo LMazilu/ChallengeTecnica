@@ -2,16 +2,10 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
 
 export function auth(req: Request, res: Response, next: NextFunction) {
-  // Controlliamo se esiste il token e lo separiamo dalla parola "Bearer"
-  const authHeader = req.headers.authorization;
+  // Controlliamo se esiste il token (salvato tra i cookie per sicurezza)
+  const cookie = req.cookies.accessToken;
 
-  if (!authHeader) {
-    return res.status(401).json({ message: "No token provided" });
-  }
-
-  const [, token] = authHeader.split(" ");
-
-  if (!token) {
+  if (!cookie) {
     return res.status(401).json({ message: "No token provided" });
   }
 
@@ -19,10 +13,10 @@ export function auth(req: Request, res: Response, next: NextFunction) {
   if (!process.env.JWT_SECRET) {
     throw new Error("JWT_SECRET is not defined");
   }
-  const decoded = jwt.verify(token, process.env.JWT_SECRET);
+  const decoded = jwt.verify(cookie, process.env.JWT_SECRET);
   if (!decoded) {
     return res.status(401).json({ message: "Invalid token" });
   }
-  req.token = decoded;
+  req.user = decoded;
   next();
 }
