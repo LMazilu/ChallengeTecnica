@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { db } from "../config/db";
-import { RowDataPacket, FieldPacket } from "mysql2"; // Adjust the import based on your actual db client
+import { RowDataPacket, FieldPacket, QueryResult } from "mysql2"; // Adjust the import based on your actual db client
 import { NotFoundError } from "../errors/notFound";
 import { InvalidCredentialsError } from "../errors/invalidCredentials";
 
@@ -13,7 +13,10 @@ interface User extends RowDataPacket {
 }
 
 export const registerUser = async (username: string, password: string) => {
-  const hashedPassword = await bcrypt.hash(password, 10);
+  if (!process.env.BCRYPT_PASSWORD_SALT) {
+    throw new Error("BCRYPT_PASSWORD_SALT is not defined");
+  }
+  const hashedPassword = await bcrypt.hash(password, process.env.BCRYPT_PASSWORD_SALT);
   const [result] = await db.execute(
     "INSERT INTO users (username, password) VALUES (?, ?)",
     [username, hashedPassword]
@@ -50,4 +53,32 @@ export const loginUser = async (username: string, password: string) => {
     }
 
     return token;
+};
+
+// Funzione per inizializzare gli utenti predefiniti
+export const initializeDefaultUsers = async () => {
+  try {
+    // Controlla se gli utenti predefiniti esistono già
+      const [userRows] = await db.query('SELECT * FROM users WHERE username = ?', ['user']);
+      const [adminRows] = await db.query('SELECT * FROM users WHERE username = ?', ['admin']);
+      if (!process.env.BCRYPT_PASSWORD_SALT) {
+        throw new Error("BCRYPT_PASSWORD_SALT is not defined");
+      }
+      // Se non esiste l'utente "user", lo crea
+      if (Array.isArray(userRows) && userRows.length === 0) {
+
+          const hashedPasswordUser = await bcrypt.hash('user', process.env.BCRYPT_PASSWORD_SALT);
+          await db.execute('INSERT INTO users (username, password, isAdmin) VALUES (?, ?, ?)', ['user', hashedPasswordUser, false]);
+          console.log('Utente "user" creato con successo.');
+    }
+
+    // Se non esiste l'utente "admin", lo crea
+    if (Array.isArray(adminRows)  && adminRows.length === 0) {
+      const hashedPasswordAdmin = await bcrypt.hash('admin', process.env.BCRYPT_PASSWORD_SALT);
+      await db.execute('INSERT INTO users (username, password, isAdmin) VALUES (?, ?, ?)', ['admin', hashedPasswordAdmin, true]);
+      console.log('Utente "admin" creato con successo.');
+    }
+  } catch (error) {
+    throw new Error("Errore durante l'inizializzazione degli utenti predefiniti: "+ error);
+  }
 };

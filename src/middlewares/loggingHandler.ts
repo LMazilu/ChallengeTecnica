@@ -6,7 +6,7 @@ export function loggingHandler(
   next: NextFunction
 ) {
   logging.log(
-    `Incomming - METHOD: [${req.method}] - URL: [${req.url}] - IP: [${req.socket.remoteAddress}]`
+    `Incoming - METHOD: [${req.method}] - URL: [${req.url}] - IP: [${req.socket.remoteAddress}]`
   );
 
   res.on("finish", () => {

@@ -8,7 +8,10 @@ import { auth } from "./middlewares/auth";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import errorHandler from "./middlewares/errorHandler";
-import { login } from "./controllers/authController";
+import authRoutes from "./routes/authRoutes";
+import voucherRoutes from "./routes/voucherRoutes";
+import { initializeDefaultUsers } from "./services/authService";
+import helmet from "helmet";
 
 // Configurazione iniziale
 const app: Express = express();
@@ -25,16 +28,24 @@ app
 
 app.use(loggingHandler);
 app.use(cookieParser());
+app.use(helmet);
 app.use(
   cors({
     origin: "http://localhost:"+process.env.CLIENT_PORT,
     credentials: true,
   })
 );
-// app.use(corsHandler);
+
+// Inizializza gli utenti predefiniti
+initializeDefaultUsers().catch(err => {
+  throw new Error("Errore durante l'inizializzazione degli utenti predefiniti: " + err);
+  process.exit(1); // Esci dall'applicazione se non riesci ad inizializzare gli utenti
+});
 
 // Import delle routes
 app.use("/users", auth, userRouter);
+app.use("/auth", authRoutes);
+app.use("/vouchers", voucherRoutes);
 
 // Routes di base per la landing page
 app.get("/", (req: Request, res: Response, next: NextFunction) => {
@@ -44,8 +55,6 @@ app.get("/", (req: Request, res: Response, next: NextFunction) => {
 app.get("/login", (req: Request, res: Response, next: NextFunction) => {
   res.render("login");
 });
-
-app.post("/login", login);
 
 app.use(apiNotFound);
 app.use(errorHandler);
