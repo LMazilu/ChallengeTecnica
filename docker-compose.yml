@@ -1,0 +1,42 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: dbcontainer
+    command: --default-authentication-plugin=mysql_native_password
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ecommerce
+    ports:
+      - "3306:3306"
+    expose:
+      - 3306
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      - challengetecnica_db_test
+
+  app:
+    container_name: appcontainer
+    build: .
+    ports:
+      - 3030:3030
+    expose:
+      - 3030
+    environment:
+      DB_HOST: db
+      DB_USER: root
+      DB_PASSWORD: root
+      DB_NAME: ecommerce
+    command: ["sh", "-c", "until mysql -h db -u root -proot -e 'select 1'; do sleep 1; done; npm start"]
+    depends_on:
+      - db  
+    networks:
+      - challengetecnica_db_test
+
+volumes:
+  db-data:
+
+networks:
+  challengetecnica_db_test:
+    driver: bridge

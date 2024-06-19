@@ -11,19 +11,12 @@ export function newUser(req: Request, res: Response) {
   res.render("users/new");
 }
 
-const mockUsers = [
-  { name: "Kyle" },
-  { name: "James" },
-  { name: "John" },
-  { name: "Paul" },
-];
-
 export function createUser(
   req: Request<{}, {}, CreateUserDto, CreateUserQueryParams>,
   res: Response<User>
 ) {
-  const { username, email, password } = req.body;
-  const a = req.query.loginAfterCreate;
+  const { username, email} = req.body;
+  // const a = req.query.loginAfterCreate;
   return res.status(200).send({ id: "1", username, email });
 }
 

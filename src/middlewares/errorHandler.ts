@@ -18,7 +18,7 @@ const errorHandler = (
   }
 
   if (err instanceof InvalidCredentialsError) {
-    return res.status(401).json({ message: err.message });
+    return res.status(400).json({ message: err.message });
     }
 
   console.error(err);

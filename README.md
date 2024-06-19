@@ -12,36 +12,15 @@ che gestisce l'acquisto di buoni. Il sito è suddiviso in diverse pagine:
 - **Area utenti**: se l'utente è loggato e 'compra' (seleziona) il taglio, potrà quindi vederlo insieme ai tagli passati nell'apposita area utenti.
 
 
-## API
+## 📚 API
 
-### Endpoints
-
-#### GET /users
-
-- Funzione: `getUsers`
-- Descrizione: Restituisce tutti gli utenti con relativo ID
-- Logica: Legge dall'array `mockUsers` e restituisce il relativo ID per ogni oggetto
-
-#### GET /users/:id
-
-- Funzione: `getUsersById`
-- Descrizione: Restituisce un utente specifico
-- Logica: Legge dall'array `mockUsers` e restituisce l'oggetto con l'ID specificato
-
-#### POST /users
-
-- Funzione: `createUser`
-- Descrizione: Crea un nuovo utente
-- Logica: Legge dal corpo della richiesta il nome dell'utente, ne crea uno nuovo e lo aggiunge all'array `mockUsers`
-
-#### PUT /users/:id
-
-- Funzione: `updateUser`
-- Descrizione: Aggiorna un utente specifico
-- Logica: Legge dal corpo della richiesta il nome dell'utente e lo aggiorna nell'array `mockUsers`
-
-#### DELETE /users/:id
-
-- Funzione: `deleteUser`
-- Descrizione: Elimina un utente specifico
-- Logica: Elimina l'oggetto dall'array `mockUsers` con l'ID specificato
+## 🔒 Rotte di Autenticazione
+📚 3. Documentazione delle API ------------------------------ 
+### 🔒 Autenticazione 
+#### 📥 Registrazione Utente 
+* **Endpoint:** `/auth/register`
+* **Metodo:** `POST`
+* **Descrizione:** Registra un nuovo utente.
+* **Richiesta:**
+* **Header:** * `Content-Type: application/json`
+* **Body:** json

@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { db } from "../config/db";
 import { RowDataPacket, FieldPacket, QueryResult } from "mysql2"; // Adjust the import based on your actual db client
 import { NotFoundError } from "../errors/notFound";
@@ -13,10 +13,13 @@ interface User extends RowDataPacket {
 }
 
 export const registerUser = async (username: string, password: string) => {
-  if (!process.env.BCRYPT_PASSWORD_SALT) {
+  if (!process.env.BCRYPT_SALT_ROUNDS) {
     throw new Error("BCRYPT_PASSWORD_SALT is not defined");
   }
-  const hashedPassword = await bcrypt.hash(password, process.env.BCRYPT_PASSWORD_SALT);
+  const salt = await bcrypt.genSalt(
+    parseInt(process.env.BCRYPT_SALT_ROUNDS, 10)
+  );
+  const hashedPassword = await bcrypt.hash(password, salt);
   const [result] = await db.execute(
     "INSERT INTO users (username, password) VALUES (?, ?)",
     [username, hashedPassword]
@@ -30,13 +33,13 @@ export const loginUser = async (username: string, password: string) => {
     [username]
   );
   const user = rows[0];
-    if (!user) {
+  if (!user) {
     throw new NotFoundError("No user found");
   }
 
   const isPasswordCorrect = await bcrypt.compare(password, user.password);
 
-    if (!isPasswordCorrect) {
+  if (!isPasswordCorrect) {
     throw new InvalidCredentialsError("Invalid password");
   }
 
@@ -44,41 +47,59 @@ export const loginUser = async (username: string, password: string) => {
     throw new Error("JWT_SECRET is not defined");
   }
 
-    const token = jwt.sign(
-        user,
-        process.env.JWT_SECRET,
-        { expiresIn: "1d" });
-    if (!token) {
-        throw new Error("Error during the authentication service. Please try again");
-    }
+  const token = jwt.sign(user, process.env.JWT_SECRET, { expiresIn: "1d" });
+  if (!token) {
+    throw new Error(
+      "Error during the authentication service. Please try again"
+    );
+  }
 
-    return token;
+  return token;
 };
 
 // Funzione per inizializzare gli utenti predefiniti
 export const initializeDefaultUsers = async () => {
   try {
     // Controlla se gli utenti predefiniti esistono già
-      const [userRows] = await db.query('SELECT * FROM users WHERE username = ?', ['user']);
-      const [adminRows] = await db.query('SELECT * FROM users WHERE username = ?', ['admin']);
-      if (!process.env.BCRYPT_PASSWORD_SALT) {
-        throw new Error("BCRYPT_PASSWORD_SALT is not defined");
-      }
-      // Se non esiste l'utente "user", lo crea
-      if (Array.isArray(userRows) && userRows.length === 0) {
-
-          const hashedPasswordUser = await bcrypt.hash('user', process.env.BCRYPT_PASSWORD_SALT);
-          await db.execute('INSERT INTO users (username, password, isAdmin) VALUES (?, ?, ?)', ['user', hashedPasswordUser, false]);
-          console.log('Utente "user" creato con successo.');
+    const [userRows] = await db.query(
+      "SELECT * FROM users WHERE username = ?",
+      ["user"]
+    );
+    const [adminRows] = await db.query(
+      "SELECT * FROM users WHERE username = ?",
+      ["admin"]
+    );
+    if (!process.env.BCRYPT_SALT_ROUNDS) {
+      throw new Error("BCRYPT_PASSWORD_SALT is not defined");
+    }
+    // Se non esiste l'utente "user", lo crea
+    if (Array.isArray(userRows) && userRows.length === 0) {
+      const saltUser = await bcrypt.genSalt(
+        parseInt(process.env.BCRYPT_SALT_ROUNDS, 10)
+      );
+      const hashedPasswordUser = await bcrypt.hash("user", saltUser);
+      await db.execute(
+        "INSERT INTO users (username, password, isAdmin) VALUES (?, ?, ?)",
+        ["user", hashedPasswordUser, false]
+      );
+      console.log('Utente "user" creato con successo.');
     }
 
     // Se non esiste l'utente "admin", lo crea
-    if (Array.isArray(adminRows)  && adminRows.length === 0) {
-      const hashedPasswordAdmin = await bcrypt.hash('admin', process.env.BCRYPT_PASSWORD_SALT);
-      await db.execute('INSERT INTO users (username, password, isAdmin) VALUES (?, ?, ?)', ['admin', hashedPasswordAdmin, true]);
+    if (Array.isArray(adminRows) && adminRows.length === 0) {
+      const saltAdmin = await bcrypt.genSalt(
+        parseInt(process.env.BCRYPT_SALT_ROUNDS, 10)
+      );
+      const hashedPasswordAdmin = await bcrypt.hash("admin", saltAdmin);
+      await db.execute(
+        "INSERT INTO users (username, password, isAdmin) VALUES (?, ?, ?)",
+        ["admin", hashedPasswordAdmin, true]
+      );
       console.log('Utente "admin" creato con successo.');
     }
   } catch (error) {
-    throw new Error("Errore durante l'inizializzazione degli utenti predefiniti: "+ error);
+    throw new Error(
+      "Errore durante l'inizializzazione degli utenti predefiniti: " + error
+    );
   }
 };

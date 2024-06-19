@@ -12,6 +12,8 @@ import authRoutes from "./routes/authRoutes";
 import voucherRoutes from "./routes/voucherRoutes";
 import { initializeDefaultUsers } from "./services/authService";
 import helmet from "helmet";
+import { initDb } from "./models/init";
+import { InvalidCredentialsError } from "./errors/invalidCredentials";
 
 // Configurazione iniziale
 const app: Express = express();
@@ -28,19 +30,32 @@ app
 
 app.use(loggingHandler);
 app.use(cookieParser());
-app.use(helmet);
+app.use(helmet());
 app.use(
   cors({
-    origin: "http://localhost:"+process.env.CLIENT_PORT,
+    origin: "http://localhost:" + process.env.CLIENT_PORT,
     credentials: true,
   })
 );
 
+
+(async () => {
+  try {
+    await initDb();
+  } catch (err) {
+    throw new InvalidCredentialsError(
+      "Errore durante l'inizializzazione del database: " + err
+    );
+  }
+})();
+
 // Inizializza gli utenti predefiniti
-initializeDefaultUsers().catch(err => {
-  throw new Error("Errore durante l'inizializzazione degli utenti predefiniti: " + err);
-  process.exit(1); // Esci dall'applicazione se non riesci ad inizializzare gli utenti
+initializeDefaultUsers().catch((err) => {
+  throw new InvalidCredentialsError(
+    "Errore durante l'inizializzazione degli utenti predefiniti: " + err
+  );
 });
+
 
 // Import delle routes
 app.use("/users", auth, userRouter);
