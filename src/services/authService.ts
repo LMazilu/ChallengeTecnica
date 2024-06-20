@@ -1,20 +1,23 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { db } from "../config/db";
-import { RowDataPacket, FieldPacket, QueryResult } from "mysql2"; // Adjust the import based on your actual db client
+import { RowDataPacket, FieldPacket } from "mysql2";
 import { NotFoundError } from "../errors/notFound";
 import { InvalidCredentialsError } from "../errors/invalidCredentials";
-
-interface User extends RowDataPacket {
-  id: number;
-  username: string;
-  password: string;
-  isAdmin: boolean;
-}
+import { AlreadyExistsError } from "../errors/alreadyExistsError";
+import { User } from "../models/user";
 
 export const registerUser = async (username: string, password: string) => {
   if (!process.env.BCRYPT_SALT_ROUNDS) {
-    throw new Error("BCRYPT_PASSWORD_SALT is not defined");
+    throw new Error("BCRYPT_SALT_ROUNDS is not defined");
+  }
+  // Check if the user already exists
+  const [existingUsers]: [User[], FieldPacket[]] = await db.execute(
+    "SELECT * FROM users WHERE username = ?",
+    [username]
+  );
+  if (existingUsers.length > 0) {
+    throw new AlreadyExistsError("User with that username already exists");
   }
   const salt = await bcrypt.genSalt(
     parseInt(process.env.BCRYPT_SALT_ROUNDS, 10)
@@ -70,7 +73,7 @@ export const initializeDefaultUsers = async () => {
       ["admin"]
     );
     if (!process.env.BCRYPT_SALT_ROUNDS) {
-      throw new Error("BCRYPT_PASSWORD_SALT is not defined");
+      throw new Error("BCRYPT_SALT_ROUNDS is not defined");
     }
     // Se non esiste l'utente "user", lo crea
     if (Array.isArray(userRows) && userRows.length === 0) {
