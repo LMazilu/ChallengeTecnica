@@ -5,6 +5,8 @@ export interface Voucher extends RowDataPacket {
   id: number;
   name: string;
   description: string;
+  prices: number[];
+  assets: string[];
   deleted: boolean;
 }
 
@@ -29,7 +31,12 @@ export const getVoucherById = async (id: number): Promise<Voucher | null> => {
     "SELECT * FROM vouchers WHERE id = ?",
     [id]
   );
-  return (rows[0]) || null;
+  if (rows.length === 0) {
+    return null;
+  }
+  const voucher = rows[0];
+  voucher.assets = JSON.parse(voucher.assets[0]);
+  return voucher as Voucher;
 };
 
 export const deleteVoucher = async (id: number): Promise<void> => {

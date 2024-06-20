@@ -11,9 +11,25 @@ export const createVoucherAssets = async (
   urls: string[]
 ): Promise<void> => {
   const values = urls.map((url) => [voucherId, url]);
-  await db.query("INSERT INTO voucherAssets (voucher_id, url) VALUES ?", [
-    values,
-  ]);
+  try {
+    // Inserimento dei nuovi URL nella tabella voucherAssets
+    await db.query("INSERT INTO voucherAssets (voucher_id, url) VALUES ?", [
+      values,
+    ]);
+
+    // Aggiornamento della tabella vouchers con i nuovi URL nel campo JSON
+    await db.query("UPDATE vouchers SET assets = JSON_ARRAY(?) WHERE id = ?", [
+      JSON.stringify(urls),
+      voucherId,
+    ]);
+
+    // Commit della transazione
+    await db.query("COMMIT");
+  } catch (error) {
+    // Rollback della transazione in caso di errore
+    await db.query("ROLLBACK");
+    throw error; // Rilancia l'errore per la gestione a livello superiore
+  }
 };
 
 export const getVoucherAssets = async (

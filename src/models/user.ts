@@ -24,7 +24,7 @@ export const getUserById = async (id: number): Promise<User | null> => {
     "SELECT id, username, password, isAdmin, deleted FROM users WHERE id = ?",
     [id]
   );
-  return (rows[0] as User) || null;
+  return rows[0];
 };
 
 export const getAllUsers = async (): Promise<User[]> => {

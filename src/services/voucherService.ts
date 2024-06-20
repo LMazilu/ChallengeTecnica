@@ -1,5 +1,5 @@
 import {
-    Voucher,
+  Voucher,
   createVoucher,
   getAllvouchers,
   getVoucherById,
@@ -20,12 +20,7 @@ export const createVoucherWithDetails = async (
 };
 
 export const getAllvouchersWithDetails = async () => {
-  const vouchers = await getAllvouchers();
-  for (const voucher of vouchers) {
-    voucher.prices = await getVoucherPrices(voucher.id);
-    voucher.assets = await getVoucherAssets(voucher.id);
-  }
-  return vouchers;
+  return await getAllvouchers();
 };
 
 export const getVoucherByIdWithDetails = async (id: number) => {
@@ -33,8 +28,6 @@ export const getVoucherByIdWithDetails = async (id: number) => {
   if (!voucher) {
     return null;
   }
-  voucher.prices = await getVoucherPrices(voucher.id);
-  voucher.assets = await getVoucherAssets(voucher.id);
   return voucher;
 };
 

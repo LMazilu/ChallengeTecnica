@@ -12,6 +12,7 @@ import voucherRoutes from "./routes/voucherRoutes";
 import helmet from "helmet";
 import { initialize } from "./models/init";
 import userRoutes from "./routes/userRoutes";
+import purchaseRoutes from "./routes/purchaseRoutes";
 
 // Configurazione iniziale
 const app: Express = express();
@@ -36,12 +37,11 @@ app.use(
   })
 );
 
-
 // Import delle routes
 app.use("/users", auth, userRoutes);
 app.use("/auth", authRoutes);
 app.use("/vouchers", voucherRoutes);
-app.use("/purchases", auth, voucherRoutes);
+app.use("/purchases", auth, purchaseRoutes);
 
 // Routes di base per la landing page
 app.get("/", (req: Request, res: Response, next: NextFunction) => {
@@ -61,14 +61,13 @@ const port = process.env.SERVER_PORT ?? 3030;
 // Inizializza il database e i default users prima di avviare il server
 initialize()
   .then(() => {
-      console.log('Database and default users initialized successfully');
-      const port = process.env.SERVER_PORT ?? 3030;
+    console.log("Database and default users initialized successfully");
     // Avvia il server solo dopo che il database e i default users sono stati inizializzati
     app.listen(port, () => {
       console.log(`Server is running on port ${port}`);
     });
   })
   .catch((error) => {
-    console.error('Failed to initialize database and default users:', error);
+    console.error("Failed to initialize database and default users:", error);
     process.exit(1); // Termina il processo se l'inizializzazione fallisce
   });

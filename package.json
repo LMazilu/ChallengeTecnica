@@ -15,7 +15,8 @@
         "test": "echo \"Error: no test specified\" && exit 1",
         "docker:down" : "docker-compose -f docker-compose.yml down",
         "docker:up" : "docker-compose up --build -d",
-        "docker" : "npm-run-all docker:down docker:up"
+        "docker:prune" : "docker image prune -f",
+        "docker" : "npm-run-all docker:down docker:prune docker:up"
     },
     "repository": {
         "type": "git",
