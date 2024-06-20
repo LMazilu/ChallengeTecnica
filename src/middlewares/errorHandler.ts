@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { InvalidCredentialsError } from "../errors/invalidCredentials";
 import { NotFoundError } from "../errors/notFound";
 import { UnauthorizedError } from "../errors/unauthorized";
+import { AlreadyExistsError } from "../errors/alreadyExistsError";
 
 const errorHandler = (
   err: Error,
@@ -19,7 +20,11 @@ const errorHandler = (
 
   if (err instanceof InvalidCredentialsError) {
     return res.status(400).json({ message: err.message });
-    }
+  }
+
+  if (err instanceof AlreadyExistsError) {
+    return res.status(409).json({ message: err.message });
+  }
 
   console.error(err);
   res.status(500).json({ message: "Internal server error" });
