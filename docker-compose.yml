@@ -28,7 +28,7 @@ services:
       DB_USER: root
       DB_PASSWORD: root
       DB_NAME: ecommerce
-    command: ["sh", "-c", "until mysql -h db -u root -proot -e 'select 1'; do sleep 1; done; npm start"]
+    command: ["sh", "-c", "until mysql -h db -u root -proot -e 'select 1'; do sleep 1; done; npm run start"]
     depends_on:
       - db  
     networks:
