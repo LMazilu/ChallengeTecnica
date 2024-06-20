@@ -1,5 +1,4 @@
 import express, { Express, NextFunction, Request, Response } from "express";
-import userRouter from "./routes/users";
 import { loggingHandler } from "./middlewares/loggingHandler";
 import { apiNotFound } from "./middlewares/apiNotFound";
 import path from "path";
@@ -10,10 +9,9 @@ import cookieParser from "cookie-parser";
 import errorHandler from "./middlewares/errorHandler";
 import authRoutes from "./routes/authRoutes";
 import voucherRoutes from "./routes/voucherRoutes";
-import { initializeDefaultUsers } from "./services/authService";
 import helmet from "helmet";
-import { initDb } from "./models/init";
-import { InvalidCredentialsError } from "./errors/invalidCredentials";
+import { initialize } from "./models/init";
+import userRoutes from "./routes/userRoutes";
 
 // Configurazione iniziale
 const app: Express = express();
@@ -39,28 +37,11 @@ app.use(
 );
 
 
-(async () => {
-  try {
-    await initDb();
-  } catch (err) {
-    throw new InvalidCredentialsError(
-      "Errore durante l'inizializzazione del database: " + err
-    );
-  }
-})();
-
-// Inizializza gli utenti predefiniti
-initializeDefaultUsers().catch((err) => {
-  throw new InvalidCredentialsError(
-    "Errore durante l'inizializzazione degli utenti predefiniti: " + err
-  );
-});
-
-
 // Import delle routes
-app.use("/users", auth, userRouter);
+app.use("/users", auth, userRoutes);
 app.use("/auth", authRoutes);
 app.use("/vouchers", voucherRoutes);
+app.use("/purchases", auth, voucherRoutes);
 
 // Routes di base per la landing page
 app.get("/", (req: Request, res: Response, next: NextFunction) => {
@@ -77,6 +58,17 @@ app.use(errorHandler);
 // Inizializzazione del server
 const port = process.env.SERVER_PORT ?? 3030;
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
+// Inizializza il database e i default users prima di avviare il server
+initialize()
+  .then(() => {
+      console.log('Database and default users initialized successfully');
+      const port = process.env.SERVER_PORT ?? 3030;
+    // Avvia il server solo dopo che il database e i default users sono stati inizializzati
+    app.listen(port, () => {
+      console.log(`Server is running on port ${port}`);
+    });
+  })
+  .catch((error) => {
+    console.error('Failed to initialize database and default users:', error);
+    process.exit(1); // Termina il processo se l'inizializzazione fallisce
+  });
