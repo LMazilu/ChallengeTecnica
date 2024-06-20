@@ -1,0 +1,410 @@
+{
+	"info": {
+		"_postman_id": "71c0dee7-eb35-4ed1-a296-ce4a12d97e04",
+		"name": "challengeTecnica",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16163443"
+	},
+	"item": [
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "users list",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJhZG1pbiIsInBhc3N3b3JkIjoiJDJhJDEwJGg4ZUY0ZkE3QUczTVVJUlo0VkVOemVXQW5HaC9xRnV6RXY0UnpnZUx4MGlwSjBINUFHUzI2IiwiaXNBZG1pbiI6MSwiaWF0IjoxNzE4ODE2OTMwLCJleHAiOjE3MTg5MDMzMzB9.u9YyJSkd7arVslESi_J6Lp7FrfMG-HEBgsrm5nS6mN0",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "localhost:3030/users",
+							"host": [
+								"localhost"
+							],
+							"port": "3030",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "user by username",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJhZG1pbiIsInBhc3N3b3JkIjoiJDJhJDEwJGg4ZUY0ZkE3QUczTVVJUlo0VkVOemVXQW5HaC9xRnV6RXY0UnpnZUx4MGlwSjBINUFHUzI2IiwiaXNBZG1pbiI6MSwiaWF0IjoxNzE4ODE2OTMwLCJleHAiOjE3MTg5MDMzMzB9.u9YyJSkd7arVslESi_J6Lp7FrfMG-HEBgsrm5nS6mN0",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user\": {\r\n        \"username\": \"testuser\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3030/users/profile",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3030",
+							"path": [
+								"users",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "user by id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJhZG1pbiIsInBhc3N3b3JkIjoiJDJhJDEwJGg4ZUY0ZkE3QUczTVVJUlo0VkVOemVXQW5HaC9xRnV6RXY0UnpnZUx4MGlwSjBINUFHUzI2IiwiaXNBZG1pbiI6MSwiaWF0IjoxNzE4ODE2OTMwLCJleHAiOjE3MTg5MDMzMzB9.u9YyJSkd7arVslESi_J6Lp7FrfMG-HEBgsrm5nS6mN0",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3030/users/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3030",
+							"path": [
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJhZG1pbiIsInBhc3N3b3JkIjoiJDJhJDEwJGg4ZUY0ZkE3QUczTVVJUlo0VkVOemVXQW5HaC9xRnV6RXY0UnpnZUx4MGlwSjBINUFHUzI2IiwiaXNBZG1pbiI6MSwiaWF0IjoxNzE4ODE2OTMwLCJleHAiOjE3MTg5MDMzMzB9.u9YyJSkd7arVslESi_J6Lp7FrfMG-HEBgsrm5nS6mN0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3030/users/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3030",
+							"path": [
+								"users",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJhZG1pbiIsInBhc3N3b3JkIjoiJDJhJDEwJGg4ZUY0ZkE3QUczTVVJUlo0VkVOemVXQW5HaC9xRnV6RXY0UnpnZUx4MGlwSjBINUFHUzI2IiwiaXNBZG1pbiI6MSwiaWF0IjoxNzE4ODE2OTMwLCJleHAiOjE3MTg5MDMzMzB9.u9YyJSkd7arVslESi_J6Lp7FrfMG-HEBgsrm5nS6mN0",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user\": {\r\n        \"id\":3,\r\n        \"username\": \"testuserr\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3030/users/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3030",
+							"path": [
+								"users",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "register",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJhZG1pbiIsInBhc3N3b3JkIjoiJDJhJDEwJGg4ZUY0ZkE3QUczTVVJUlo0VkVOemVXQW5HaC9xRnV6RXY0UnpnZUx4MGlwSjBINUFHUzI2IiwiaXNBZG1pbiI6MSwiaWF0IjoxNzE4ODE2OTMwLCJleHAiOjE3MTg5MDMzMzB9.u9YyJSkd7arVslESi_J6Lp7FrfMG-HEBgsrm5nS6mN0",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"example\",\r\n  \"password\": \"example\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3030/auth/register",
+							"host": [
+								"localhost"
+							],
+							"port": "3030",
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJhZG1pbiIsInBhc3N3b3JkIjoiJDJhJDEwJGg4ZUY0ZkE3QUczTVVJUlo0VkVOemVXQW5HaC9xRnV6RXY0UnpnZUx4MGlwSjBINUFHUzI2IiwiaXNBZG1pbiI6MSwiaWF0IjoxNzE4ODE2OTMwLCJleHAiOjE3MTg5MDMzMzB9.u9YyJSkd7arVslESi_J6Lp7FrfMG-HEBgsrm5nS6mN0",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"testuser\",\r\n  \"password\": \"testpassword\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3030/auth/login",
+							"host": [
+								"localhost"
+							],
+							"port": "3030",
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "voucher",
+			"item": [
+				{
+					"name": "create voucher full",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"voucher\": {\r\n        \"name\": \"Gift Voucher\",\r\n        \"description\": \"A special gift voucher for our valued customers.\",\r\n        \"prices\": [\r\n            10.00,\r\n            20.00,\r\n            50.00\r\n        ],\r\n        \"assets\": [\r\n            \"http://example.com/image1.jpg\",\r\n            \"http://example.com/image2.jpg\"\r\n        ]\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3030/vouchers",
+							"host": [
+								"localhost"
+							],
+							"port": "3030",
+							"path": [
+								"vouchers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all vouchers",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJhZG1pbiIsInBhc3N3b3JkIjoiJDJhJDEwJGg4ZUY0ZkE3QUczTVVJUlo0VkVOemVXQW5HaC9xRnV6RXY0UnpnZUx4MGlwSjBINUFHUzI2IiwiaXNBZG1pbiI6MSwiaWF0IjoxNzE4ODE2OTMwLCJleHAiOjE3MTg5MDMzMzB9.u9YyJSkd7arVslESi_J6Lp7FrfMG-HEBgsrm5nS6mN0",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "localhost:3030/vouchers",
+							"host": [
+								"localhost"
+							],
+							"port": "3030",
+							"path": [
+								"vouchers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get voucher by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3030/vouchers/2",
+							"host": [
+								"localhost"
+							],
+							"port": "3030",
+							"path": [
+								"vouchers",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "purchase",
+			"item": [
+				{
+					"name": "get purchases by user",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user\": {\r\n        \"id\": \"1\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3030/purchases/user/1",
+							"host": [
+								"localhost"
+							],
+							"port": "3030",
+							"path": [
+								"purchases",
+								"user",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all purchases",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3030/purchases",
+							"host": [
+								"localhost"
+							],
+							"port": "3030",
+							"path": [
+								"purchases"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "purchase new voucher",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\": 1,\r\n    \"voucherId\": 5,\r\n    \"price\": 50\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3030/purchases",
+							"host": [
+								"localhost"
+							],
+							"port": "3030",
+							"path": [
+								"purchases"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
