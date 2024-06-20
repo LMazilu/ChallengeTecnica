@@ -7,7 +7,7 @@ export const register = async (req: Request, res: Response) => {
     await registerUser(username, password);
     res.status(201).send("User registered");
   } catch (error) {
-    res.status(500).send("Error registering user");
+    res.status(409).send("User with that username already exists");
   }
 };
 

@@ -16,7 +16,7 @@ export function auth(req: Request, res: Response, next: NextFunction) {
   const decoded = jwt.verify(cookie, process.env.JWT_SECRET);
   if (!decoded) {
     return res.status(401).json({ message: "Invalid token" });
-  }
-  req.user = decoded;
+    }
+  req.decoded = decoded;
   next();
 }
