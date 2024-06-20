@@ -78,7 +78,7 @@ export const deleteUserHandler = async (req: Request, res: Response) => {
       throw new Error("User not found");
     }
     await updateUser(parseInt(userId, 10), null, null, null, true);
-    res.status(200).json({ message: "User deleted successfully" });
+    res.status(204).json({ message: "User deleted successfully" });
   } catch (error) {
     if (error instanceof Error) {
       res.status(400).json({ error: error.message });

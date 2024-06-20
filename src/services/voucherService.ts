@@ -2,7 +2,8 @@ import {
   Voucher,
   createVoucher,
   getAllvouchers,
-  getVoucherById,
+    getVoucherById,
+  deleteVoucher
 } from "../models/voucher";
 import { createVoucherAssets, getVoucherAssets } from "../models/voucherAsset";
 import { createVoucherPrices, getVoucherPrices } from "../models/voucherPrice";
@@ -31,7 +32,7 @@ export const getVoucherByIdWithDetails = async (id: number) => {
   return voucher;
 };
 
-export const deleteVoucher = async (id: number) => {
+export const deleteVoucherById = async (id: number) => {
   await getVoucherById(id);
   await deleteVoucher(id);
 };

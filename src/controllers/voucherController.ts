@@ -1,7 +1,7 @@
 import { getUserProfileById } from "../services/userService";
 import {
   createVoucherWithDetails,
-  deleteVoucher,
+  deleteVoucherById,
   getAllvouchersWithDetails,
   getVoucherByIdWithDetails,
 } from "../services/voucherService";
@@ -47,7 +47,7 @@ export const getVoucherByIdHandler = async (req: Request, res: Response) => {
 export const deleteVoucherHandler = async (req: Request, res: Response) => {
     try {
         const id = Number(req.params.id);
-        await deleteVoucher(id);
+        await deleteVoucherById(id);
         res.status(204).end();
     } catch (error: Error | any) {
         res.status(400).json({ error: error.message });
