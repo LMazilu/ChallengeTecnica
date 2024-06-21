@@ -1,5 +1,12 @@
 import { Request, Response, NextFunction } from "express";
 
+/**
+ * Middleware function for logging incoming requests and their outcomes.
+ * 
+ * @param {Request} req - The request object.
+ * @param {Response} res - The response object.
+ * @param {NextFunction} next - The next function in the middleware chain.
+ */
 export function loggingHandler(
   req: Request,
   res: Response,

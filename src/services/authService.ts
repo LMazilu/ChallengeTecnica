@@ -1,12 +1,21 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { db } from "../config/db";
-import { RowDataPacket, FieldPacket } from "mysql2";
+import { FieldPacket } from "mysql2";
 import { NotFoundError } from "../errors/notFound";
 import { InvalidCredentialsError } from "../errors/invalidCredentials";
 import { AlreadyExistsError } from "../errors/alreadyExistsError";
 import { User } from "../models/user";
 
+/**
+ * Registers a new user with the given username and password.
+ *
+ * @param {string} username - The username of the user to register.
+ * @param {string} password - The password of the user to register.
+ * @return {Promise<any>} A promise that resolves to the result of the database insertion operation.
+ * @throws {Error} If the BCRYPT_SALT_ROUNDS environment variable is not defined.
+ * @throws {AlreadyExistsError} If a user with the given username already exists.
+ */
 export const registerUser = async (username: string, password: string) => {
   if (!process.env.BCRYPT_SALT_ROUNDS) {
     throw new Error("BCRYPT_SALT_ROUNDS is not defined");
@@ -30,6 +39,18 @@ export const registerUser = async (username: string, password: string) => {
   return result;
 };
 
+
+/**
+ * Authenticates a user by checking their username and password against the database.
+ * Returns a jwt access token.
+ *
+ * @param {string} username - The username of the user.
+ * @param {string} password - The password of the user.
+ * @return {Promise<string>} - A promise that resolves to the access token if the authentication is successful.
+ * @throws {NotFoundError} - If no user is found with the given username.
+ * @throws {InvalidCredentialsError} - If the provided password is incorrect.
+ * @throws {Error} - If the JWT_SECRET environment variable is not defined.
+ */
 export const loginUser = async (username: string, password: string) => {
   const [rows]: [User[], FieldPacket[]] = await db.execute(
     "SELECT * FROM users WHERE username = ?",
@@ -60,7 +81,14 @@ export const loginUser = async (username: string, password: string) => {
   return token;
 };
 
-// Funzione per inizializzare gli utenti predefiniti
+
+/**
+ * Initializes default users in the database if they don't already exist.
+ *
+ * @return {Promise<void>} A promise that resolves when the default users are successfully initialized.
+ * @throws {Error} If the BCRYPT_SALT_ROUNDS environment variable is not defined.
+ * @throws {Error} If there is an error during the initialization process.
+ */
 export const initializeDefaultUsers = async () => {
   try {
     // Controlla se gli utenti predefiniti esistono già

@@ -1,6 +1,13 @@
 import jwt from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
 
+/**
+ * Middleware function for authenticating requests using JWT tokens stored in cookies.
+ * 
+ * @param {Request} req - The request object.
+ * @param {Response} res - The response object.
+ * @param {NextFunction} next - The next function in the middleware chain.
+ */
 export function auth(req: Request, res: Response, next: NextFunction) {
   // Controlliamo se esiste il token (salvato tra i cookie per sicurezza)
   const cookie = req.cookies.accessToken;

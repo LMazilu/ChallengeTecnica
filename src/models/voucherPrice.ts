@@ -6,6 +6,15 @@ export interface VoucherPrice {
   price: number;
 }
 
+/**
+ * Creates voucher prices in the database and updates the corresponding voucher with the new prices.
+ *
+ * @param {number} voucherId - The ID of the voucher.
+ * @param {number[]} prices - An array of prices to be added as voucher prices.
+ * @return {Promise<void>} A Promise that resolves when the voucher prices are created and the voucher is updated.
+ * @throws {Error} If there is an error during the creation or update process.
+ */
+
 export const createVoucherPrices = async (
   voucherId: number,
   prices: number[]
@@ -35,6 +44,13 @@ export const createVoucherPrices = async (
   }
 };
 
+
+/**
+ * Retrieves the voucher prices associated with a given voucher ID from the database.
+ *
+ * @param {number} voucherId - The ID of the voucher.
+ * @return {Promise<VoucherPrice[]>} A Promise that resolves to an array of VoucherPrice objects representing the voucher prices.
+ */
 export const getVoucherPrices = async (
   voucherId: number
 ): Promise<VoucherPrice[]> => {

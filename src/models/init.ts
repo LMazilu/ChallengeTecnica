@@ -1,7 +1,11 @@
 import { db } from "../config/db";
 import bcrypt from "bcryptjs";
 
-//init default database tables
+/**
+ * Initializes the database by creating necessary tables if they do not exist.
+ * 
+ * This function creates tables for users, vouchers, voucher prices, voucher assets, and purchases.
+ */
 export const initializeDatabase = async () => {
   // Crea la tabella 'users' se non esiste
   const createUsersTable = `
@@ -73,7 +77,11 @@ export const initializeDatabase = async () => {
   }
 };
 
-//init default database users
+/**
+ * Initializes default users in the database, including an admin user and a regular user.
+ * 
+ * This function creates default users with predefined usernames and passwords, one being an admin user and the other a regular user.
+ */
 const initializeDefaultUsers = async () => {
   const adminUsername = "admin";
   const adminPassword = "admin";

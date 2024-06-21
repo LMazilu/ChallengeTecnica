@@ -1,5 +1,14 @@
 import { Request, Response, NextFunction } from "express";
 
+/**
+ * Middleware function to handle Cross-Origin Resource Sharing (CORS) headers.
+ * @deprecated Use `cors` middleware instead.
+ *
+ * @param {Request} req - The incoming request object.
+ * @param {Response} res - The outgoing response object.
+ * @param {NextFunction} next - The next middleware function in the chain.
+ * @return {void} This function does not return anything.
+ */
 export const corsHandler = (
   req: Request,
   res: Response,

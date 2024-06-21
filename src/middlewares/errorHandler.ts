@@ -4,7 +4,15 @@ import { NotFoundError } from "../errors/notFound";
 import { UnauthorizedError } from "../errors/unauthorized";
 import { AlreadyExistsError } from "../errors/alreadyExistsError";
 
-const errorHandler = (
+/**
+ * Error handling middleware that maps specific custom errors to appropriate HTTP responses.
+ * 
+ * @param {Error} err - The error object.
+ * @param {Request} req - The request object.
+ * @param {Response} res - The response object.
+ * @param {NextFunction} next - The next function in the middleware chain.
+ */
+export const errorHandler = (
   err: Error,
   req: Request,
   res: Response,
@@ -29,5 +37,3 @@ const errorHandler = (
   console.error(err);
   res.status(500).json({ message: "Internal server error" });
 };
-
-export default errorHandler;

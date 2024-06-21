@@ -1,5 +1,12 @@
 import { Request, Response, NextFunction } from "express";
 
+/**
+ * Handles API routes that are not found.
+ *
+ * @param {Request} req - The request object.
+ * @param {Response} res - The response object.
+ * @param {NextFunction} next - The next function in the middleware chain.
+ */
 export const apiNotFound = (
   req: Request,
   res: Response,

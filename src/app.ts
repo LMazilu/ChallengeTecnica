@@ -6,7 +6,7 @@ import "./config/logging";
 import { auth } from "./middlewares/auth";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import errorHandler from "./middlewares/errorHandler";
+import {errorHandler} from "./middlewares/errorHandler";
 import authRoutes from "./routes/authRoutes";
 import voucherRoutes from "./routes/voucherRoutes";
 import helmet from "helmet";
@@ -43,7 +43,7 @@ app.use("/auth", authRoutes);
 app.use("/vouchers", voucherRoutes);
 app.use("/purchases", auth, purchaseRoutes);
 
-// Routes di base per la landing page
+// Routes di base temporanee per la landing page fino al rilascio del frontend
 app.get("/", (req: Request, res: Response, next: NextFunction) => {
   res.status(200).render("welcome");
 });

@@ -7,6 +7,17 @@ import {
 import { getVoucherById } from "../models/voucher";
 import { getUserProfileById } from "./userService";
 
+
+/**
+ * Purchase a voucher for a user.
+ *
+ * @param {number} userId - The ID of the user.
+ * @param {number} voucherId - The ID of the voucher.
+ * @param {number} price - The price of the voucher.
+ * @return {Promise<{id: number, userId: number, voucherId: number, price: number, purchaseDate: Date}>} - The purchase details.
+ * @throws {Error} - If the voucher is not found, the voucher prices is not an array, or the price is not included in the voucher prices.
+ * @throws {Error} - If the user is not found.
+ */
 export const purchaseVoucher = async (
   userId: number,
   voucherId: number,
@@ -35,6 +46,13 @@ export const purchaseVoucher = async (
   return { id: purchaseId, userId, voucherId, price, purchaseDate: new Date() };
 };
 
+/**
+ * Retrieves the purchases made by a user.
+ *
+ * @param {number} userId - The ID of the user.
+ * @return {Promise<Purchase[]>} - A promise that resolves to an array of Purchase objects representing the user's purchases.
+ * @throws {Error} - If the user is not found.
+ */
 export const getUserPurchases = async (userId: number) => {
   const user = await getUserProfileById(userId);
   if (!user) {
@@ -43,10 +61,22 @@ export const getUserPurchases = async (userId: number) => {
   return await getPurchasesByUserId(userId);
 };
 
+
+/**
+ * Retrieves all purchases from the database.
+ *
+ * @return {Promise<Purchase[]>} A promise that resolves to an array of Purchase objects representing all purchases.
+ */
 export const getPurchases = async () => {
   return await getAllPurchases();
 };
 
+/**
+ * Retrieves a purchase record by its ID from the database.
+ *
+ * @param {number} id - The ID of the purchase to retrieve.
+ * @return {Promise<Purchase>} A promise that resolves with the purchase record matching the provided ID.
+ */
 export const getPurchaseByPurchaseId = async (id: number) => {
   return getPurchaseById(id);
 };

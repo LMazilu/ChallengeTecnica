@@ -6,6 +6,16 @@ import {
 } from "../services/userService";
 import { Request, Response } from "express";
 
+/**
+ * Handles the request to get the user profile.
+ *
+ * @route GET /users/profile
+ * @param {Request} req - The request object containing the user's username.
+ * @param {Response} res - The response object to send the user profile data.
+ * @return {Promise<void>} A promise that resolves when the user profile is retrieved and sent in the response.
+ * @throws {Error} If the user's username is not found.
+ * @throws {Error} If an unknown error occurs.
+ */
 export const getUserProfileHandler = async (req: Request, res: Response) => {
   try {
     const userName = req.body.user.username;
@@ -23,6 +33,15 @@ export const getUserProfileHandler = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * Retrieves the user profile by their ID.
+ *
+ * @route GET /users/:id
+ * @param {Request} req - The request object containing the user ID.
+ * @param {Response} res - The response object to send the user profile.
+ * @return {Promise<void>} A promise that resolves when the user profile is retrieved and sent in the response.
+ * @throws {Error} If the user ID is not provided or if an unknown error occurs.
+ */
 export const getUserProfileByIdHandler = async (
   req: Request,
   res: Response
@@ -40,6 +59,14 @@ export const getUserProfileByIdHandler = async (
   }
 };
 
+/**
+ * Retrieves a list of all users and sends it as a JSON response.
+ *
+ * @route GET /users
+ * @param {Request} req - The request object.
+ * @param {Response} res - The response object.
+ * @return {Promise<void>} A promise that resolves when the response is sent.
+ */
 export const getAllUsersHandler = async (req: Request, res: Response) => {
   try {
     const users = await getAllUsersList();
@@ -53,6 +80,14 @@ export const getAllUsersHandler = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * Handles updating a user's information based on the provided request.
+ *
+ * @route PUT /users
+ * @param {Request} req - The request object containing the user details to update.
+ * @param {Response} res - The response object to send the update status.
+ * @return {Promise<void>} A promise that resolves when the user is updated successfully.
+ */
 export const updateUserHandler = async (req: Request, res: Response) => {
   try {
     const userId = req.body.user.id;
@@ -71,6 +106,14 @@ export const updateUserHandler = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * Handles deleting a user logically based on the provided request.
+ *
+ * @routee DELETE /users/:id
+ * @param {Request} req - The request object containing the user ID to delete.
+ * @param {Response} res - The response object to send the deletion status.
+ * @return {Promise<void>} A promise that resolves when the user is deleted successfully.
+ */
 export const deleteUserHandler = async (req: Request, res: Response) => {
   try {
     const userId = req.params.id;
